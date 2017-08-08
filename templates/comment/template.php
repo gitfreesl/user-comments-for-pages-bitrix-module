@@ -10,15 +10,23 @@ var ObjComment = '<?=$arResult['COMMENT_OBJECT'];?>'; // object comment
 <p><a class="add_com" data-parent='0' href="javascript:void()">Добавить комментарий</a></p>
 
 <div class="com_block">
-<?
-   	   for($i=0;$i<count($arResult['comments']);$i++ ) { // tree of comment
-            if(!$arResult['comments'][$i]['is_parent']) //don't have child
-			  echo '<div  class="com_item"><p>'.$arResult['comments'][$i]['item']['name'].'<br>'.$arResult['comments'][$i]['item']['date'].'<br>'.$arResult['comments'][$i]['item']['text'].'<br><a class="add_com" data-parent='.$arResult['comments'][$i]['item']['id'].' href="javascript:void()">'.GetMessage("MFT_REPLY").'</a></p></div>';
-			else echo '<div  class="com_item"><p>'.$arResult['comments'][$i]['item']['name'].'<br>'.$arResult['comments'][$i]['item']['date'].'<br>'.$arResult['comments'][$i]['item']['text'].'<br><a class="add_com" data-parent='.$arResult['comments'][$i]['item']['id'].' href="javascript:void()">'.GetMessage("MFT_REPLY").'</a></p>';
-			if($arResult['comments'][$i]['last_child']) // last child
-			   echo '</div>';
-              				
-	   }
-?>
+    <?foreach($arResult['comments'] as $arItem): // tree of comment?>
+	   <?if(!$arItem['is_parent']):  //don't have child?>
+	     <div  class="com_item">
+		   <p><?=$arItem['item']['name']?><br><?=$arItem['item']['date']?><br><?=$arItem['item']['text']?><br>
+		     <a class="add_com" data-parent='<?=$arItem['item']['id']?>' href="javascript:void()"><?=GetMessage("MFT_REPLY")?></a>
+		   </p>
+		 </div>
+	  <?else:?>
+	     <div  class="com_item">
+		   <p><?=$arItem['item']['name']?><br><?=$arItem['item']['date']?><br><?=$arItem['item']['text']?><br>
+		     <a class="add_com" data-parent='<?=$arItem['item']['id']?>' href="javascript:void()"><?=GetMessage("MFT_REPLY")?></a>
+		   </p>
+	  <?endif;?>
+	  <?if($arResult['comments'][$i]['last_child']): // last child?>
+	     </div>
+	  <?endif;?>
 
+    <?endforeach;?>
+	
 </div>
